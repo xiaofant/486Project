@@ -27,6 +27,7 @@ def get_probs(liberal, conservative, total_vocab):
 	return liberal, conservative, total_vocab
 
 def testNaiveBayes(filename, total_vocab, liberal, conservative):
+	user_results = {}
 	with open(filename, 'r') as f:
 		for line in f:
 			username, tweet = line.split(',')
@@ -51,13 +52,13 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 			# liberal_users = []
 			# conserv_users = []
 
-			# Determine whether document is more of a lie or truth
 			if conserv_calc > liberal_calc:
-				#print filename, 'lie'
-				return 'conservative'
+				user_results[username] = 'conservative'
 			else:
-				#print filename, 'truth'
-				return 'liberal'
+				user_results[username] = 'liberal'
+
+	# Returns dictionary with key: username, value: classification
+	return user_results
 
 
 def main():
