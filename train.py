@@ -49,8 +49,15 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 
 			# Add in who the user follows 
 			# *** SAM ADD IN THE LIST OF CONSERVATIVE/LIBERAL USERS HERE **** 
-			# liberal_users = []
-			# conserv_users = []
+			liberal_users = ['@HillaryClinton', '@BarackObama', '@JoeBiden', '@SenSanders', 
+								'@BernieSanders', '@MichelleObama', '@timkaine', '@BuzzFeed', \
+								'@BuzzFeedNews', '@Politico', '@washingtonpost', '@nytimes', '@MSNBC', \
+								'@billmaher', '@TheDailyShow', '@MartinBashir', '@MikeBloomberg', '@iamjohnoliver', \
+								'@Trevornoah']
+			conserv_users = ['@realDonalTrump', '@mike_pence', '@tedcruz', '@SpeakerRyan', '@PRyan', \
+								'@SenJohnMccain', '@FoxNews', '@theblaze', '@YoungCons', '@DRUDGE_REPORT', \
+								'@BreitbartNews', '@rushlimbaugh', '@seanhannity', '@ASavageNation', '@glennbeck', \
+								'@hughhewitt', '@marklevinshow', '@TomiLahren', '@PrisonPlanet']
 
 			if conserv_calc > liberal_calc:
 				user_results[username] = 'conservative'
