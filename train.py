@@ -60,7 +60,7 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	# Returns dictionary with key: username, value: classification
 	return user_results
 
-def calculateAccuracy(user_results, state):
+def compareResults(user_results, state):
 
 	vote_results = {
 	"AL": "R",
