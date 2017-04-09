@@ -4,6 +4,7 @@ import os
 import glob
 import math
 from process_tweets import *
+from friendship import *
 
 ##########################
 # THIS ASSUMES THAT THE TWEETS HAVE ALREADY BEEN PROCESSED AND
@@ -31,14 +32,41 @@ def get_probs(liberal, conservative, total_vocab):
 
 	return liberal, conservative, total_vocab
 
+def followingCalculations(username):
+	# Liberal and conservative users on Twitter
+	liberal_users = ['HillaryClinton', 'BarackObama', 'JoeBiden', 'SenSanders', \
+						'BernieSanders', 'MichelleObama', 'timkaine', 'BuzzFeed', \
+						'BuzzFeedNews', 'Politico', 'washingtonpost', 'nytimes', 'MSNBC', \
+						'billmaher', 'TheDailyShow', 'MartinBashir', 'MikeBloomberg', 'iamjohnoliver', \
+						'Trevornoah']
+	conserv_users = ['realDonalTrump', 'mike_pence', 'tedcruz', 'SpeakerRyan', 'PRyan', \
+						'SenJohnMccain', 'FoxNews', 'theblaze', 'YoungCons', 'DRUDGE_REPORT', \
+						'BreitbartNews', 'rushlimbaugh', 'seanhannity', 'ASavageNation', 'glennbeck', \
+						'hughhewitt', 'marklevinshow', 'TomiLahren', 'PrisonPlanet']
+
+	follower_values = 0
+	# Liberal = positive (+1)
+	# Conservative = negative (-1)
+
+	# Check if user follows liberal/conservative people
+	for user in liberal_users:
+		if is_following(username, user):
+			follower_values += 1
+	for user in conserv_users:
+		if is_following(username, user):
+			follower_values -= 1
+
+	return follower_values
+
 def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	user_results = {}
 
 	for line in filename:
-		line = preprocess(line.decode('utf-8'))
-		print line
+		line = line.split(', ')
 		username = line[0]
-		tweet = line[1:]
+		tweet = preprocess(line[1].decode('utf-8'))
+		#print username
+		#print tweet
 		conserv_calc = math.log10(0.5)
 		liberal_calc = math.log10(0.5)
 
@@ -55,27 +83,18 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 			else:
 				liberal_calc += math.log10(1.00 / float(len(liberal.keys()) + total_vocab))
 
-		# Add in who the user follows 
-		# *** SAM ADD IN THE LIST OF CONSERVATIVE/LIBERAL USERS HERE **** 
-		liberal_users = ['@HillaryClinton', '@BarackObama', '@JoeBiden', '@SenSanders', 
-							'@BernieSanders', '@MichelleObama', '@timkaine', '@BuzzFeed', \
-							'@BuzzFeedNews', '@Politico', '@washingtonpost', '@nytimes', '@MSNBC', \
-							'@billmaher', '@TheDailyShow', '@MartinBashir', '@MikeBloomberg', '@iamjohnoliver', \
-							'@Trevornoah']
-		conserv_users = ['@realDonalTrump', '@mike_pence', '@tedcruz', '@SpeakerRyan', '@PRyan', \
-							'@SenJohnMccain', '@FoxNews', '@theblaze', '@YoungCons', '@DRUDGE_REPORT', \
-							'@BreitbartNews', '@rushlimbaugh', '@seanhannity', '@ASavageNation', '@glennbeck', \
-							'@hughhewitt', '@marklevinshow', '@TomiLahren', '@PrisonPlanet']
+		#follwing_calc = followingCalculations(username)
+		#print follwing_calc
+		#print conserv_calc
+		#print liberal_calc
 
-		print conserv_calc
-		print liberal_calc
 		if conserv_calc > liberal_calc:
 			user_results[username] = 'conservative'
 		else:
 			user_results[username] = 'liberal'
 
 	# Returns dictionary with key: username, value: classification
-	print (user_results)
+	#print (user_results)
 	return user_results
 
 def compareResults(user_results, state):
@@ -149,51 +168,15 @@ def compareResults(user_results, state):
 	else:
 		expected = 'D'
 
-	print "c count: " + str(conservative_count)
-	print "l count: " + str(liberal_count)
+	#print "c count: " + str(conservative_count)
+	#rint "l count: " + str(liberal_count)
 	conserv_percent = float(float(conservative_count) / (conservative_count + liberal_count)) * 100
 	liberal_percent = float(float(liberal_count) / (conservative_count + liberal_count)) * 100
-	print 'Expected outcome is: ' + vote_results[state][0] + ' (R: ' + str(vote_results[state][1]) + ', D: ' + str(vote_results[state][2]) + ')'
-	print 'Actual outcome is: ' + expected + ' (R: ' + str(round(conserv_percent,1)) + ', D: ' + str(round(liberal_percent,1)) + ')'
+	print 'Expected outcome for ' + state + ' is: ' + vote_results[state][0] + ' (R: ' + str(vote_results[state][1]) + ', D: ' + str(vote_results[state][2]) + ')'
+	print 'Actual outcome for ' + state + ' is: ' + expected + ' (R: ' + str(round(conserv_percent,1)) + ', D: ' + str(round(liberal_percent,1)) + ')'
 
-# def main():
-# 	liberal = {}
-# 	conservative = {}
-# 	lib = open('liberal.txt', 'r')
-# 	con = open('conservative.txt', 'r')
-
-# 	liberal = get_freqs(lib, liberal)
-# 	conservative = get_freqs(con, conservative)
-
-# 	# Get distinct words
-# 	vocab = []
-# 	for word in liberal:
-# 		if word not in vocab:
-# 			vocab.append(word)
-
-# 	for word in conservative:
-# 		if word not in vocab:
-# 			vocab.append(word)
-
-# 	total_vocab = len(vocab)
-
-# 	liberal, conservative, total_vocab = get_probs(liberal, conservative, total_vocab)
-
-# 	print liberal
-# 	print "=================================="
-# 	print conservative
-# 	return liberal, conservative
-
-
-
-
-
-
-if __name__ == "__main__":
-	main()
-
-
-
+def calculate_accuracy():
+	print "to do"
 
 
 

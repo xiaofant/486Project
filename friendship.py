@@ -15,7 +15,7 @@ def is_following( user1, user2 ):
 	return relation[0].following
 	#is_followed_by( user2, user1 )
 
-print is_following('tcalkins90', 'CarmineZozzora')
+#print is_following('tcalkins90', 'CarmineZozzora')
 
 # print "#" * 80
 # print is_followed_by( "25073877", "2581703371" )

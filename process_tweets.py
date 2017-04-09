@@ -34,7 +34,7 @@ def preprocess(tweet):
     except:
         clean = clean
     input = re.split('\s+', clean)
-    print input
+    #print input
 
     output = []
 
