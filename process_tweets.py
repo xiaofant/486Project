@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import preprocessor as p
 import sys
 import re
@@ -9,9 +8,7 @@ def isDate(s):
     return False
 
 def preprocess(tweet):
-    p.set_options(p.OPT.URL, p.OPT.EMOJI)
-    clean = p.clean(tweet)
-    clean = clean.replace("#","")
+
 
     # copy of tokenizer from my previous project
     # using http://grammar.about.com/od/words/a/EnglishContractions.html for reference of contractions
@@ -29,8 +26,12 @@ def preprocess(tweet):
         contractions[contraction] = expand[:-1]
         line = cont.readline()
 
-    input = clean.lower()
+    input = tweet.lower()
     input = input.strip()
+    p.set_options(p.OPT.URL, p.OPT.EMOJI)
+    clean = p.clean(input)
+    clean = clean.replace("#", "")
+
     input = re.split('\s+', input)
 
     output = []
