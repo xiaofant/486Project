@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+
 import os
 import glob
+import math
 from process_tweets import *
 
 ##########################
@@ -33,9 +35,10 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	user_results = {}
 
 	for line in filename:
-		line = preprocess(line)
+		line = preprocess(line.decode('utf-8'))
 		print line
-		username, tweet = line.split(', ')
+		username = line[0]
+		tweet = line[1:]
 		conserv_calc = math.log10(0.5)
 		liberal_calc = math.log10(0.5)
 
@@ -148,38 +151,38 @@ def compareResults(user_results, state):
 
 	print "c count: " + str(conservative_count)
 	print "l count: " + str(liberal_count)
-	conserv_percent = float(conservative_count / (conservative_count + liberal_count))
-	liberal_percent = float(liberal_count / (conservative_count + liberal_count))
-	print 'Expected outcome is: ' + vote_results[state] + '(R: ' + conserv_percent + ', D: ' + liberal_percent + ')'
+	conserv_percent = float(float(conservative_count) / (conservative_count + liberal_count)) * 100
+	liberal_percent = float(float(liberal_count) / (conservative_count + liberal_count)) * 100
+	print 'Expected outcome is: ' + vote_results[state] + '(R: ' + str(conserv_percent) + ', D: ' + str(liberal_percent) + ')'
 	print 'Actual outcome is: ' + expected
 
-def main():
-	liberal = {}
-	conservative = {}
-	lib = open('liberal.txt', 'r')
-	con = open('conservative.txt', 'r')
+# def main():
+# 	liberal = {}
+# 	conservative = {}
+# 	lib = open('liberal.txt', 'r')
+# 	con = open('conservative.txt', 'r')
 
-	liberal = get_freqs(lib, liberal)
-	conservative = get_freqs(con, conservative)
+# 	liberal = get_freqs(lib, liberal)
+# 	conservative = get_freqs(con, conservative)
 
-	# Get distinct words
-	vocab = []
-	for word in liberal:
-		if word not in vocab:
-			vocab.append(word)
+# 	# Get distinct words
+# 	vocab = []
+# 	for word in liberal:
+# 		if word not in vocab:
+# 			vocab.append(word)
 
-	for word in conservative:
-		if word not in vocab:
-			vocab.append(word)
+# 	for word in conservative:
+# 		if word not in vocab:
+# 			vocab.append(word)
 
-	total_vocab = len(vocab)
+# 	total_vocab = len(vocab)
 
-	liberal, conservative, total_vocab = get_probs(liberal, conservative, total_vocab)
+# 	liberal, conservative, total_vocab = get_probs(liberal, conservative, total_vocab)
 
-	print liberal
-	print "=================================="
-	print conservative
-	return liberal, conservative
+# 	print liberal
+# 	print "=================================="
+# 	print conservative
+# 	return liberal, conservative
 
 
 
