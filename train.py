@@ -137,7 +137,10 @@ def compareResults(user_results, state):
     	expected = 'R'
     else:
     	expected = 'D'
-    print 'Expected outcome is: ' + vote_results[state]
+
+    conserv_percent = float(conservative_count / (conservative_count + liberal_count))
+    liberal_percent = float(liberal_count / (conservative_count + liberal_count))
+    print 'Expected outcome is: ' + vote_results[state] + '(R: ' + conserv_percent + ', D: ' + liberal_percent + ')'
     print 'Actual outcome is: ' + expected
 
 def main():
