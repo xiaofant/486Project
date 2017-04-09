@@ -8,8 +8,6 @@ def isDate(s):
     return False
 
 def preprocess(tweet):
-
-
     # copy of tokenizer from my previous project
     # using http://grammar.about.com/od/words/a/EnglishContractions.html for reference of contractions
     cont = open("Contractions in English")
@@ -31,8 +29,12 @@ def preprocess(tweet):
     p.set_options(p.OPT.URL, p.OPT.EMOJI)
     clean = p.clean(input)
     clean = clean.replace("#", "")
-
-    input = re.split('\s+', input)
+    try:
+        clean = str(clean)
+    except:
+        clean = clean
+    input = re.split('\s+', clean)
+    print input
 
     output = []
 
@@ -76,4 +78,5 @@ def preprocess(tweet):
                 continue
             output.append(word)
 
+    # print output
     return output
