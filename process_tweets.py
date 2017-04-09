@@ -15,7 +15,7 @@ def preprocess(tweet):
 
     # copy of tokenizer from my previous project
     # using http://grammar.about.com/od/words/a/EnglishContractions.html for reference of contractions
-    cont = open("486Project/Contractions in English")
+    cont = open("Contractions in English")
     line = cont.readline()
     contractions = {}
 

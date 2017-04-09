@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import os
 import glob
+from process_tweets import *
 
 ##########################
 # THIS ASSUMES THAT THE TWEETS HAVE ALREADY BEEN PROCESSED AND
@@ -8,7 +10,8 @@ import glob
 
 def get_freqs(file, dictionary):
 	for line in file:
-		for word in line.split(' '):
+		line = preprocess(line)
+		for word in line:
 			if word in dictionary:
 				dictionary[word] += 1
 			else:
@@ -28,43 +31,48 @@ def get_probs(liberal, conservative, total_vocab):
 
 def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	user_results = {}
-	with open(filename, 'r') as f:
-		for line in f:
-			username, tweet = line.split(',')
-			conserv_calc = math.log10(0.5)
-			liberal_calc = math.log10(0.5)
 
-			# Calculate conservative and liberal calculations for user via naive bayes
-			for word in tweet:
-				if word in conservative:
-					conserv_calc += math.log10(float(conservative[word]))
-					
-				else:
-					conserv_calc += math.log10(1.00 / float(len(conservative.keys()) + total_vocab))
-					
-				if word in liberal:
-					liberal_calc += math.log10(float(liberal[word]))
-				else:
-					liberal_calc += math.log10(1.00 / float(len(liberal.keys()) + total_vocab))
+	for line in filename:
+		line = preprocess(line)
+		print line
+		username, tweet = line.split(', ')
+		conserv_calc = math.log10(0.5)
+		liberal_calc = math.log10(0.5)
 
-			# Add in who the user follows 
-			# *** SAM ADD IN THE LIST OF CONSERVATIVE/LIBERAL USERS HERE **** 
-			liberal_users = ['@HillaryClinton', '@BarackObama', '@JoeBiden', '@SenSanders', 
-								'@BernieSanders', '@MichelleObama', '@timkaine', '@BuzzFeed', \
-								'@BuzzFeedNews', '@Politico', '@washingtonpost', '@nytimes', '@MSNBC', \
-								'@billmaher', '@TheDailyShow', '@MartinBashir', '@MikeBloomberg', '@iamjohnoliver', \
-								'@Trevornoah']
-			conserv_users = ['@realDonalTrump', '@mike_pence', '@tedcruz', '@SpeakerRyan', '@PRyan', \
-								'@SenJohnMccain', '@FoxNews', '@theblaze', '@YoungCons', '@DRUDGE_REPORT', \
-								'@BreitbartNews', '@rushlimbaugh', '@seanhannity', '@ASavageNation', '@glennbeck', \
-								'@hughhewitt', '@marklevinshow', '@TomiLahren', '@PrisonPlanet']
-
-			if conserv_calc > liberal_calc:
-				user_results[username] = 'conservative'
+		# Calculate conservative and liberal calculations for user via naive bayes
+		for word in tweet:
+			if word in conservative:
+				conserv_calc += math.log10(float(conservative[word]))
+				
 			else:
-				user_results[username] = 'liberal'
+				conserv_calc += math.log10(1.00 / float(len(conservative.keys()) + total_vocab))
+				
+			if word in liberal:
+				liberal_calc += math.log10(float(liberal[word]))
+			else:
+				liberal_calc += math.log10(1.00 / float(len(liberal.keys()) + total_vocab))
+
+		# Add in who the user follows 
+		# *** SAM ADD IN THE LIST OF CONSERVATIVE/LIBERAL USERS HERE **** 
+		liberal_users = ['@HillaryClinton', '@BarackObama', '@JoeBiden', '@SenSanders', 
+							'@BernieSanders', '@MichelleObama', '@timkaine', '@BuzzFeed', \
+							'@BuzzFeedNews', '@Politico', '@washingtonpost', '@nytimes', '@MSNBC', \
+							'@billmaher', '@TheDailyShow', '@MartinBashir', '@MikeBloomberg', '@iamjohnoliver', \
+							'@Trevornoah']
+		conserv_users = ['@realDonalTrump', '@mike_pence', '@tedcruz', '@SpeakerRyan', '@PRyan', \
+							'@SenJohnMccain', '@FoxNews', '@theblaze', '@YoungCons', '@DRUDGE_REPORT', \
+							'@BreitbartNews', '@rushlimbaugh', '@seanhannity', '@ASavageNation', '@glennbeck', \
+							'@hughhewitt', '@marklevinshow', '@TomiLahren', '@PrisonPlanet']
+
+		print conserv_calc
+		print liberal_calc
+		if conserv_calc > liberal_calc:
+			user_results[username] = 'conservative'
+		else:
+			user_results[username] = 'liberal'
 
 	# Returns dictionary with key: username, value: classification
+	print (user_results)
 	return user_results
 
 def compareResults(user_results, state):
@@ -91,57 +99,59 @@ def compareResults(user_results, state):
 	"LA": "R",
 	"ME": "D",
 	"MD": "D", 
-    "MA": "D",
-    "MI": "R",
-    "MN": "D",
-    "MS": "R",
-    "MO": "R",
-    "MT": "R",
-    "NE": "R",
-    "NV": "D",
-    "NH": "D",
-    "NJ": "D", 
-    "NM": "D",
-    "NY": "D",
-    "NC": "R",
-    "ND": "R",
-    "OH": "R",
-    "OK": "R",
-    "OR": "D",
-    "PA": "R",
-    "RI": "D",
-    "SC": "R", 
-    "SD": "R",
-    "TN": "R",
-    "TX": "R",
-    "UT": "R",
-    "VT": "D",
-    "VA": "D",
-    "WA": "D",
-    "WV": "R",
-    "WI": "R",
-    "WY": "R"}
+	"MA": "D",
+	"MI": "R",
+	"MN": "D",
+	"MS": "R",
+	"MO": "R",
+	"MT": "R",
+	"NE": "R",
+	"NV": "D",
+	"NH": "D",
+	"NJ": "D", 
+	"NM": "D",
+	"NY": "D",
+	"NC": "R",
+	"ND": "R",
+	"OH": "R",
+	"OK": "R",
+	"OR": "D",
+	"PA": "R",
+	"RI": "D",
+	"SC": "R", 
+	"SD": "R",
+	"TN": "R",
+	"TX": "R",
+	"UT": "R",
+	"VT": "D",
+	"VA": "D",
+	"WA": "D",
+	"WV": "R",
+	"WI": "R",
+	"WY": "R"}
+	
+	conservative_count = 0
+	liberal_count = 0
 
-    conservative_count = 0
-    liberal_count = 0
+	for user, vote in user_results.items():
+		if vote == 'conservative':
+			conservative_count += 1
+		else:
+			liberal_count += 1
 
-    for user, vote in user_results.items():
-    	if vote == 'conservative':
-    		conservative_count += 1
-    	else:
-    		liberal_count += 1
+	expected = ''
 
-    expected = ''
+	if conservative_count > liberal_count:
+		expected = 'R'
+	else:
+		expected = 'D'
 
-    if conservative_count > liberal_count:
-    	expected = 'R'
-    else:
-    	expected = 'D'
-
-    conserv_percent = float(conservative_count / (conservative_count + liberal_count))
-    liberal_percent = float(liberal_count / (conservative_count + liberal_count))
-    print 'Expected outcome is: ' + vote_results[state] + '(R: ' + conserv_percent + ', D: ' + liberal_percent + ')'
-    print 'Actual outcome is: ' + expected
+	print "c count: " + str(conservative_count)
+	print "l count: " + str(liberal_count)
+	conserv_percent = float(conservative_count / (conservative_count + liberal_count))
+	liberal_percent = float(liberal_count / (conservative_count + liberal_count))
+	print 'Expected outcome is: ' + vote_results[state] + '(R: ' + conserv_percent + ', D: ' + liberal_percent + ')'
+	print 'Actual outcome is: ' + expected
 
 def main():
 	liberal = {}
@@ -177,7 +187,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+	main()
 
 
 

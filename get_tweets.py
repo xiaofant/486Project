@@ -80,7 +80,7 @@ def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 
 
 
-trump_and_hillary_tweets_for_state( "MI", 50 )
+#trump_and_hillary_tweets_for_state( "MI", 50 )
 
 
 
