@@ -60,6 +60,78 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	# Returns dictionary with key: username, value: classification
 	return user_results
 
+def calculateAccuracy(user_results, state):
+
+	vote_results = {
+	"AL": "R",
+	"AK": "R",
+	"AZ": "R",
+	"AR": "R",
+	"CA": "D",
+	"CO": "D",
+	"CT": "D",
+	"DC": "D",
+	"DE": "D",
+	"FL": "R",
+	"GA": "R", 
+	"HI": "D",
+	"ID": "R",
+	"IL": "D",
+	"IN": "R",
+	"IA": "R",
+	"KS": "R",
+	"KY": "R",
+	"LA": "R",
+	"ME": "D",
+	"MD": "D", 
+    "MA": "D",
+    "MI": "R",
+    "MN": "D",
+    "MS": "R",
+    "MO": "R",
+    "MT": "R",
+    "NE": "R",
+    "NV": "D",
+    "NH": "D",
+    "NJ": "D", 
+    "NM": "D",
+    "NY": "D",
+    "NC": "R",
+    "ND": "R",
+    "OH": "R",
+    "OK": "R",
+    "OR": "D",
+    "PA": "R",
+    "RI": "D",
+    "SC": "R", 
+    "SD": "R",
+    "TN": "R",
+    "TX": "R",
+    "UT": "R",
+    "VT": "D",
+    "VA": "D",
+    "WA": "D",
+    "WV": "R",
+    "WI": "R",
+    "WY": "R"}
+
+    conservative_count = 0
+    liberal_count = 0
+
+    for user, vote in user_results.items():
+    	if vote == 'conservative':
+    		conservative_count += 1
+    	else:
+    		liberal_count += 1
+
+    expected = ''
+
+    if conservative_count > liberal_count:
+    	expected = 'R'
+    else:
+    	expected = 'D'
+    print 'Expected outcome is: ' + vote_results[state]
+    print 'Actual outcome is: ' + expected
 
 def main():
 	liberal = {}
