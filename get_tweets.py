@@ -113,10 +113,10 @@ def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 
 	o.close()
 
-#'WA', 'VA', 'DE', 'DC', 'WI',
-states = ['WV', 'HI', 'CO', 'FL', 'FM', 'WY', 'PR', 'NJ', 'NM', 'TX', 'LA', 'AK', 'NC', 'ND', 'NE', 'TN', 'NY', 'PA', 'RI', 'NV', 'AA', 'NH', 'GU', 'AE', 'PW', 'VI', 'CA', 'AL', 'AP', 'AS', 'AR', 'VT', 'IL', 'GA', 'IN', 'IA', 'OK', 'AZ', 'ID', 'CT', 'ME', 'MD', 'MA', 'OH', 'UT', 'MO', 'MN', 'MI', 'MH', 'KS', 'MT', 'MP', 'MS', 'SC', 'KY', 'OR', 'SD']
+#'WA', 'VA', 'DE', 'DC', 'WI', 'HI'
+states = ['WV', 'CO', 'FL', 'FM', 'WY', 'PR', 'NJ', 'NM', 'TX', 'LA', 'AK', 'NC', 'ND', 'NE', 'TN', 'NY', 'PA', 'RI', 'NV', 'AA', 'NH', 'GU', 'AE', 'PW', 'VI', 'CA', 'AL', 'AP', 'AS', 'AR', 'VT', 'IL', 'GA', 'IN', 'IA', 'OK', 'AZ', 'ID', 'CT', 'ME', 'MD', 'MA', 'OH', 'UT', 'MO', 'MN', 'MI', 'MH', 'KS', 'MT', 'MP', 'MS', 'SC', 'KY', 'OR', 'SD']
 
 #for state in states:
-trump_and_hillary_tweets_for_state( 'WI',  50 )
+trump_and_hillary_tweets_for_state( 'HI',  50 )
 
 
