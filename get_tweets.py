@@ -1,26 +1,29 @@
+import sys
 import random
 import unicodedata
+import time
 import twitter
 import pandas as pd
 # pip install python-twitter
 # pip install pandas
 
+API = twitter.Api(consumer_key='b65N756ehzXq8uRnxILyld9HR',
+                      consumer_secret='FxNhSIgfBQ8JVPOizZBfkX61UPC5lv7oGkowZUeAeHo40LQDrT',
+                      access_token_key='820682120-tKOcfWOtG1JVwcRPBQNLl1qlrki41D2ZeZ8YElYj',
+                      access_token_secret='F5CPGWwGk1tybivXfGzFiFUXgrAEmtbkfXC90srOvaBZs')
 
-API = twitter.Api(consumer_key='6himHtojv9Yd4Fkd2xhPBiImb',
-                      consumer_secret='ALAjI12cCnChFFBkN3gfQNc6jr02v5bEcpYQEscnYzgJ7wLbCV',
-                      access_token_key='820682120-LiZvM5apLmGrryd1vm8AHanmcugfPnxsiTDLVkLv',
-                      access_token_secret='BKn4KygkLTWsLSiTQZRkSI2rvgLNWaAfC1VU62MYGVyio')
-
-date_since ="2016-10-01"
-date_until = "2017-04-01"
+radius = "15mi"
+date_since ="2016-09-06"
+date_until = "2016-10-10"
 
 
 # The city dataset is downloaded from:
 # http://simplemaps.com/data/us-zips
 def find_cities_by_state( state, num ):
-	fname = "city_dataset/" + state + "_Features_20170201.txt"
 	fname = "uszips.csv"
 	df = pd.read_csv( fname )
+
+
 
 	df = df.ix[ df[ "state"] == state ]
 
@@ -29,15 +32,47 @@ def find_cities_by_state( state, num ):
 
 
 	# get random sample
+	nrow = df.shape[0]
+	num = min( nrow, num)
 	coords = df.sample( n = num )
 	coords = coords.ix[ : , [ "city", "lat", "lng"] ]
 
 	return coords
 
 
-def find_tweets_by_coord( keyword, city ):
-	return API.GetSearch( term = keyword, geocode=[ city["lat"], city["lng"], "15mi"], since = date_since, until = date_until )
 
+
+def countdown(t):
+	while t:
+		mins, secs = divmod(t, 60)
+		timeformat = '{:02d}:{:02d}'.format(mins, secs)
+		sys.stdout.write( timeformat + "\r" )
+		# sys.stdout.flush()
+		time.sleep(1)
+		t -= 1
+	print 'Wait Done!\n'
+
+
+
+
+def find_tweets_by_coord( keyword, city ):
+	lat = str( city["lat"] )
+	lng = str( city["lng"] )
+
+	query = "l=&q=" + keyword + "&geocode=" + lat + "%2C" + lng + "%2C" + radius + "&since%3A" + date_since + "%20until%3A" + date_until
+
+	print query
+
+	# return API.GetSearch( term = keyword, geocode=[ city["lat"], city["lng"], "15mi"], since = date_since, until = date_until )
+
+
+	while True:
+		try:
+			return API.GetSearch( raw_query = query )
+		except Exception as e:
+			print "Error Encounterd!", "#" * 60
+			print e
+			countdown( 15 * 60  )
 
 def find_tweets_by_state( keyword, state, num, coords, o):
 #	df = pd.DataFrame( {"city":{}, "screen_name" : {}, "text":{} } )
@@ -78,14 +113,10 @@ def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 
 	o.close()
 
+#'WA', 'VA', 'DE', 'DC', 'WI',
+states = ['WV', 'HI', 'CO', 'FL', 'FM', 'WY', 'PR', 'NJ', 'NM', 'TX', 'LA', 'AK', 'NC', 'ND', 'NE', 'TN', 'NY', 'PA', 'RI', 'NV', 'AA', 'NH', 'GU', 'AE', 'PW', 'VI', 'CA', 'AL', 'AP', 'AS', 'AR', 'VT', 'IL', 'GA', 'IN', 'IA', 'OK', 'AZ', 'ID', 'CT', 'ME', 'MD', 'MA', 'OH', 'UT', 'MO', 'MN', 'MI', 'MH', 'KS', 'MT', 'MP', 'MS', 'SC', 'KY', 'OR', 'SD']
 
-
-#trump_and_hillary_tweets_for_state( "MI", 50 )
-
-
-
-
-
-
+#for state in states:
+trump_and_hillary_tweets_for_state( 'WI',  50 )
 
 
