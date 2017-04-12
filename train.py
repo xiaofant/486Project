@@ -172,11 +172,14 @@ def compareResults(user_results, state):
 	#rint "l count: " + str(liberal_count)
 	conserv_percent = float(float(conservative_count) / (conservative_count + liberal_count)) * 100
 	liberal_percent = float(float(liberal_count) / (conservative_count + liberal_count)) * 100
-	print 'Expected outcome for ' + state + ' is: ' + vote_results[state][0] + ' (R: ' + str(vote_results[state][1]) + ', D: ' + str(vote_results[state][2]) + ')'
-	print 'Actual outcome for ' + state + ' is: ' + expected + ' (R: ' + str(round(conserv_percent,1)) + ', D: ' + str(round(liberal_percent,1)) + ')'
+	print 'Expected outcome for ' + state + ' is: ' + vote_results[state][0] + ' (R: ' + str(vote_results[state][1]) + '%, D: ' + str(vote_results[state][2]) + '%)'
+	print 'Actual outcome for ' + state + ' is: ' + expected + ' (R: ' + str(round(conserv_percent,1)) + '%, D: ' + str(round(liberal_percent,1)) + '%)'
 
-def calculate_accuracy():
-	print "to do"
+	# For accuracy, return 1 if correctly predicted, return 0 if not
+	if expected == vote_results[state][0]:
+		return 1
+	else:
+		return 0
 
 
 
