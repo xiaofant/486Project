@@ -60,13 +60,19 @@ def followingCalculations(username):
 
 def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	user_results = {}
+	tweets = []
 
 	for line in filename:
 		line = line.split(', ')
 		username = line[0]
 		tweet = preprocess(line[1].decode('utf-8'))
-		#print username
-		#print tweet
+
+		# Don't pull duplicate tweets from test data
+		if tweet in tweets:
+			continue
+		else:
+			tweets.append(tweet)
+
 		conserv_calc = math.log10(0.5)
 		liberal_calc = math.log10(0.5)
 
@@ -88,10 +94,13 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 		#print conserv_calc
 		#print liberal_calc
 
+		if username not in user_results:
+			user_results[username] = 0
+
 		if conserv_calc > liberal_calc:
-			user_results[username] = 'conservative'
+			user_results[username] -=1
 		else:
-			user_results[username] = 'liberal'
+			user_results[username] += 1
 
 	# Returns dictionary with key: username, value: classification
 	#print (user_results)
@@ -156,7 +165,7 @@ def compareResults(user_results, state):
 	liberal_count = 0
 
 	for user, vote in user_results.items():
-		if vote == 'conservative':
+		if vote < 0:
 			conservative_count += 1
 		else:
 			liberal_count += 1
