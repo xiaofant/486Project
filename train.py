@@ -61,6 +61,7 @@ def followingCalculations(username):
 def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	user_results = {}
 	tweets = []
+	borderline = 0
 
 	for line in filename:
 		line = line.split(', ')
@@ -76,6 +77,13 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 		conserv_calc = math.log10(0.5)
 		liberal_calc = math.log10(0.5)
 
+		hillaryHashtag = False
+		trumpHashtag = False
+		hillaryHashtagCount = 0
+		trumpHashtagCount = 0
+		liberalHashtags = ['imwithher', 'hillarywon', 'iamwithher', 'votehillary', 'presidentclinton', 'clinton2016', 'hillaryclinton', 'nevertrump', 'basketofdeplorables']
+		conservHashtags = ['maga', 'trumpwon', 'votetrump', 'presidenttrump', 'trump2016', 'neverhillary', 'donaldtrump', 'makeamericagreatagain', 'crookedhillary', 'lockherup']
+
 		# Calculate conservative and liberal calculations for user via naive bayes
 		for word in tweet:
 			if word in conservative:
@@ -89,6 +97,13 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 			else:
 				liberal_calc += math.log10(1.00 / float(len(liberal.keys()) + total_vocab))
 
+			if word in liberalHashtags:
+				hillaryHashtag = True
+				hillaryHashtagCount += 1
+			if word in conservHashtags:
+				trumpHashtag = True
+				trumpHashtagCount += 1
+
 		#follwing_calc = followingCalculations(username)
 		#print follwing_calc
 		#print conserv_calc
@@ -97,13 +112,36 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 		if username not in user_results:
 			user_results[username] = 0
 
+		# Hashtag calculations included
 		if conserv_calc > liberal_calc:
+			if trumpHashtag:
+				if hillaryHashtag:
+					if trumpHashtagCount > hillaryHashtagCount:
+						user_results[username] -=1
+					else:
+						# borderline
+						borderline += 1
+						user_results[username] += 1
+				else:
+					user_results[username] -=1
 			user_results[username] -=1
 		else:
+			if hillaryHashtag:
+				if trumpHashtag:
+					if hillaryHashtagCount > trumpHashtagCount:
+						user_results[username] +=1
+					else:
+						# borderline
+						borderline += 1
+						user_results[username] -= 1
+				else:
+					user_results[username] +=1
 			user_results[username] += 1
+
 
 	# Returns dictionary with key: username, value: classification
 	#print (user_results)
+	#print borderline
 	return user_results
 
 def compareResults(user_results, state):
