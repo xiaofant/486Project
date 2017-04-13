@@ -12,6 +12,7 @@ api = tweepy.API(auth)
 
 # Return true iff user1 is following user2
 def following_users( user ):
+	print 'following_users'
 	following_user_ids = api.friends_ids(user)
 	#relation = api.ShowFriendship(source_screen_name = user1, target_screen_name = user2)
 	return following_user_ids

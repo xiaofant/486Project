@@ -5,6 +5,7 @@ import glob
 import math
 from process_tweets import *
 from friendship import *
+from get_follower_id import *
 
 ##########################
 # THIS ASSUMES THAT THE TWEETS HAVE ALREADY BEEN PROCESSED AND
@@ -44,16 +45,26 @@ def followingCalculations(username):
 						'BreitbartNews', 'rushlimbaugh', 'seanhannity', 'ASavageNation', 'glennbeck', \
 						'hughhewitt', 'marklevinshow', 'TomiLahren', 'PrisonPlanet']
 
+
+	#print 'getting follower info'
+	liberal_user_id = get_user_ids(liberal_users)
+	conserv_user_id = get_user_ids(conserv_users)
+
 	follower_values = 0
 	# Liberal = positive (+1)
 	# Conservative = negative (-1)
 
+	#print 'getting users followers'
+	username_followers = following_users(username)
+
+	#print 'done getting all followers'
 	# Check if user follows liberal/conservative people
-	for user in liberal_users:
-		if is_following(username, user):
+	for user in liberal_user_id:
+		if user in username_followers:
 			follower_values += 1
-	for user in conserv_users:
-		if is_following(username, user):
+
+	for user in conserv_user_id:
+		if user in username_followers:
 			follower_values -= 1
 
 	return follower_values
@@ -104,44 +115,53 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 				trumpHashtag = True
 				trumpHashtagCount += 1
 
-		#follwing_calc = followingCalculations(username)
+		
 		#print follwing_calc
 		#print conserv_calc
 		#print liberal_calc
+		#break
 
 		if username not in user_results:
 			user_results[username] = 0
 
+		# *** RATE LIMIT ERROR FROM TWITTER -- UNABLE TO USE IN CALCULATIONS ***
+		# following_calc = followingCalculations(username)
+		# # Add followers metric
+		# if following_calc > 0:
+		# 	user_results[username] += 1
+		# elif following_calc < 0:
+		# 	user_results[username] -= 1
+
 		# Hashtag calculations included
-		if conserv_calc > liberal_calc:
-			if trumpHashtag:
-				if hillaryHashtag:
-					if trumpHashtagCount > hillaryHashtagCount:
-						user_results[username] -=1
-					else:
-						# borderline
-						borderline += 1
-						user_results[username] += 1
-				else:
-					user_results[username] -=1
-			user_results[username] -=1
-		else:
+		if trumpHashtag:
+			# trump and hillary
 			if hillaryHashtag:
-				if trumpHashtag:
-					if hillaryHashtagCount > trumpHashtagCount:
-						user_results[username] +=1
-					else:
-						# borderline
-						borderline += 1
-						user_results[username] -= 1
-				else:
-					user_results[username] +=1
+				if trumpHashtagCount > hillaryHashtagCount:
+					user_results[username] -=1
+				elif hillaryHashtagCount > trumpHashtagCount:
+					user_results[username] += 1
+			# only trump
+			else:
+				user_results[username] -=1
+		elif hillaryHashtag:
 			user_results[username] += 1
 
 
+		# give precedence to naive bayes
+		if conserv_calc > liberal_calc:
+			user_results[username] -= 1
+			if user_results[username] == 0:
+				user_results[username] = -1
+
+
+		else:
+			user_results[username] += 1
+			if user_results[username] == 0:
+				user_results[username] = 1
+				
+
 	# Returns dictionary with key: username, value: classification
 	#print (user_results)
-	#print borderline
 	return user_results
 
 def compareResults(user_results, state):
