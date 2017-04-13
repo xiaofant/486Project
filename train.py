@@ -225,7 +225,7 @@ def compareResults(user_results, state):
 	for user, vote in user_results.items():
 		if vote < 0:
 			conservative_count += 1
-		else:
+		elif vote > 0:
 			liberal_count += 1
 
 	expected = ''
@@ -237,8 +237,8 @@ def compareResults(user_results, state):
 
 	#print "c count: " + str(conservative_count)
 	#rint "l count: " + str(liberal_count)
-	conserv_percent = float(float(conservative_count) / (conservative_count + liberal_count)) * 100
-	liberal_percent = float(float(liberal_count) / (conservative_count + liberal_count)) * 100
+	conserv_percent = float(float(conservative_count) / (len(user_results))) * 100
+	liberal_percent = float(float(liberal_count) / (len(user_results))) * 100
 	print 'Expected outcome for ' + state + ' is: ' + vote_results[state][0] + ' (R: ' + str(vote_results[state][1]) + '%, D: ' + str(vote_results[state][2]) + '%)'
 	print 'Actual outcome for ' + state + ' is: ' + expected + ' (R: ' + str(round(conserv_percent,1)) + '%, D: ' + str(round(liberal_percent,1)) + '%)'
 
