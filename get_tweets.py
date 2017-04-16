@@ -113,8 +113,11 @@ def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 
 	o.close()
 
-#'WA', 'VA', 'DE', 'DC', 'WI', 'HI'
-states = ['WV', 'CO', 'FL', 'FM', 'WY', 'PR', 'NJ', 'NM', 'TX', 'LA', 'AK', 'NC', 'ND', 'NE', 'TN', 'NY', 'PA', 'RI', 'NV', 'AA', 'NH', 'GU', 'AE', 'PW', 'VI', 'CA', 'AL', 'AP', 'AS', 'AR', 'VT', 'IL', 'GA', 'IN', 'IA', 'OK', 'AZ', 'ID', 'CT', 'ME', 'MD', 'MA', 'OH', 'UT', 'MO', 'MN', 'MI', 'MH', 'KS', 'MT', 'MP', 'MS', 'SC', 'KY', 'OR', 'SD']
+states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
+          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+          "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 
 #for state in states:
 trump_and_hillary_tweets_for_state( 'HI',  50 )
