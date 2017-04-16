@@ -40,9 +40,9 @@ python 486project.py CA
 python 486project.py ALL
 ```
 
-If you would like to test our program with a new text file of tweets for any state, you can change the first parameter in the trump_and_hillary_tweets_for_state function on line 122 in get_tweets.py to include your choice of state initials and generate a new batch of tweets for that state. Then, run the file as follows in order to generate a new file of tweets for your chosen state:
+If you would like to test our program with a new text file of tweets for any state, you can change the first parameter in the trump_and_hillary_tweets_for_state function on line 122 in get_tweets.py to include your choice of state initials and generate a new batch of tweets for that state. Then, run the file as follows in order to generate a new file of tweets for your chosen state (ex. MI):
 ```bash
-python get_tweets.py
+python get_tweets.py MI
 ```
 
 ## Program Files:
