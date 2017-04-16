@@ -1,14 +1,19 @@
 # 486 Project: Analyzation of Users' Support for Political Parties in a State Based on Twitter Data
 
+Group Members:
+* Chitra Ramanathan (ramanac)
+* Samuel Han (samthan)
+* Xiaofan Tan (xiaofant)
+* Yawen Luo (yawenluo)
+
 ## Project Setup/Installations:
-Below are all of the necessary 
+Below are all of the necessary modules that are required to run our program.
+
 ### For Getting Tweets:
 ```bash
 pip install pandas
 pip install python-twitter
 ```
-
-Change line 84 in get_tweets.py to get diffferent state's tweets
 
 ### For processing tweets:
 ```bash
@@ -21,8 +26,21 @@ pip install tweepy
 ```
 
 ## Running the Program:
+To run the program using our previously generated text files containing tweets from different states:
+* For one single state's election results:
+```bash
+python 486project.py <STATE INITIALS>
+```
+Example for collecting California's election results:
+```bash
+python 486project.py CA
+```
+* For all state's election results and overall system accuracy:
+```bash
+python 486project.py ALL
+```
 
-
+If you would like to test our program with a new text file of tweets for any state, you can change the first parameter in the trump_and_hillary_tweets_for_state function on line 120 in get_tweets to include your choice of state initials and generate a new batch of tweets for that state.
 
 ## Program Files:
 ### conservative.txt, liberal.txt
