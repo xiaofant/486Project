@@ -112,14 +112,13 @@ def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 	find_tweets_by_state( "Trump Hillary", state, num_cities, coords, o)
 
 	o.close()
-
-states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
+if __name__ == '__main__':
+	states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
           "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
           "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
           "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
           "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 
-#for state in states:
-trump_and_hillary_tweets_for_state( 'HI',  50 )
+	trump_and_hillary_tweets_for_state( 'HI',  50 )
 
 
