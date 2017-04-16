@@ -15,6 +15,7 @@ from get_follower_id import *
 def get_freqs(file, dictionary):
 	for line in file:
 		line = preprocess(line)
+		line = removeStopwords(line)
 		for word in line:
 			if word in dictionary:
 				dictionary[word] += 1
@@ -78,6 +79,7 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 		line = line.split(', ')
 		username = line[0]
 		tweet = preprocess(line[1].decode('utf-8'))
+		tweet = removeStopwords(tweet)
 
 		# Don't pull duplicate tweets from test data
 		if tweet in tweets:
