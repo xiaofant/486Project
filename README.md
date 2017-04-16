@@ -54,5 +54,11 @@ These files contain 100 conservative and 100 liberal manually labeled tweets use
 ### process_tweets.py
 
 ### train.py
+This file contains the functions necessary to train/test the Naive Bayes model utilized in our system. In addition, the testNaiveBayes function is modified such that in addition to calculating the Naive Bayes classification, it also considers the presence of popular political hashtags in its calculations. Parts of the testNaiveBayes function are commented out as we tried implementing a metric that would determine whether a user followed popular liberal or conservative users; however, we ran into issues with Twitter's rate-limiting API.
+
+Lastly, this file includes a function used to compare the results of our model to the 2016 Presidential Election results, and calculate our model's accuracy.
  
 ### friendship.py, get_follower_id.py
+
+### 486project.py
+This file contains the main() of our project. It handles different command line arguments (as mentioned above in 'Running the Program') to test our system.
