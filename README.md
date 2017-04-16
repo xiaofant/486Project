@@ -1,21 +1,17 @@
-# 486Project
+# 486 Project: Analyzation of Users' Support for Political Parties in a State Based on Twitter Data
 
-# For Getting Tweets
-Installation:
-
+## Project Setup/Installations:
+Below are all of the necessary 
+### For Getting Tweets:
 pip install pandas
 pip install python-twitter
 
 Change line 84 in get_tweets.py to get diffferent state's tweets
 
-# For processing tweets
-Installation:
-
+### For processing tweets
 pip install tweet-preprocessor
 
-# For checking if user1 is following user2
-
-Installation:
+### In order to check if user1 is following user2
 pip install tweepy
 
  
