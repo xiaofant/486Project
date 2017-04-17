@@ -72,3 +72,10 @@ These files were used to create the followers metric briefly mentioned in train.
 
 ### 486project.py
 This file contains the main() of our project. It handles different command line arguments (as mentioned above in 'Running the Program') to test our system.
+
+## Datasets
+### Annotated Data (Training Data)
+- conservative.txt
+- liberal.txt
+### Raw Data for each state
+Files in dataset/ are raw data for tweets collected in each state. Filenames are following the format of tweets_[state].txt
