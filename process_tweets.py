@@ -2,13 +2,13 @@ import preprocessor as p
 import sys
 import re
 
+# check is token a date or not
 def isDate(s):
     if re.match(r'\w+/\d{2}/\d{4}|\w+-\d{2}-\d{4}', s):
         return True
     return False
 
 def preprocess(tweet):
-    # copy of tokenizer from my previous project
     # using http://grammar.about.com/od/words/a/EnglishContractions.html for reference of contractions
     cont = open("Contractions in English")
     line = cont.readline()
@@ -24,20 +24,23 @@ def preprocess(tweet):
         contractions[contraction] = expand[:-1]
         line = cont.readline()
 
+    # lowercase tweet and remove all links and EMOJI in it
     input = tweet.lower()
     input = input.strip()
     p.set_options(p.OPT.URL, p.OPT.EMOJI)
     clean = p.clean(input)
     clean = clean.replace("#", "")
+
+    # convert the cleaned input tweet from unicode to python string
     try:
         clean = str(clean)
     except:
         clean = clean
     input = re.split('\s+', clean)
-    #print input
 
     output = []
 
+    # tokenize tweet
     for i in range(0, len(input)):
         word = input[i]
         # remove all other symbols/characters that are not mentioned
@@ -81,6 +84,7 @@ def preprocess(tweet):
     # print output
     return output
 
+# Remove stopwords in tweet
 def removeStopwords(tokensList):
     tokens = []
     f = open("stopwords", 'r')
