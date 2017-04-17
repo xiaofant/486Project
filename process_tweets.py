@@ -80,3 +80,14 @@ def preprocess(tweet):
 
     # print output
     return output
+
+def removeStopwords(tokensList):
+    tokens = []
+    f = open("stopwords", 'r')
+    stoptext = f.read()
+    for word in tokensList:
+        if word not in stoptext:
+            tokens.append(word)
+    f.close()
+    #print tokens
+    return tokens
