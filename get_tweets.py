@@ -56,16 +56,15 @@ def countdown(t):
 
 
 def find_tweets_by_coord( keyword, city ):
+	# find latitudes of city
 	lat = str( city["lat"] )
 	lng = str( city["lng"] )
-
+	# query tweets
 	query = "l=&q=" + keyword + "&geocode=" + lat + "%2C" + lng + "%2C" + radius + "&since%3A" + date_since + "%20until%3A" + date_until
 
 	print query
 
-	# return API.GetSearch( term = keyword, geocode=[ city["lat"], city["lng"], "15mi"], since = date_since, until = date_until )
-
-
+	# wait for rate limit to go away
 	while True:
 		try:
 			return API.GetSearch( raw_query = query )
@@ -75,8 +74,6 @@ def find_tweets_by_coord( keyword, city ):
 			countdown( 15 * 60  )
 
 def find_tweets_by_state( keyword, state, num, coords, o):
-#	df = pd.DataFrame( {"city":{}, "screen_name" : {}, "text":{} } )
-#	j = 0
 
 	for i in coords.index:
 		tweets = find_tweets_by_coord( keyword, coords.ix[ i, : ] )
@@ -92,13 +89,6 @@ def find_tweets_by_state( keyword, state, num, coords, o):
 			except Exception as e:
 				print "Error:", e
 
-		#	df.loc[j] = [ coords.ix[i, "city"],
-		#			js.user.screen_name,
-		#			text ]
-		#	j+=1
-
-
-	# df.to_csv( "tweets_" + state +  "_" + keyword.replace(" ", "_" ) +  ".csv" )
 
 
 
@@ -106,21 +96,16 @@ def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 	coords = find_cities_by_state( state, num_cities )
 
 	o = open( "tweets_" + state + ".txt", "w" )
-
+	# find tweets with specified keywords
 	find_tweets_by_state( "Trump", state, num_cities, coords, o)
 	find_tweets_by_state( "Hillary", state, num_cities, coords, o)
 	find_tweets_by_state( "Trump Hillary", state, num_cities, coords, o)
 
 	o.close()
 if __name__ == '__main__':
-	states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
-          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
-          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
-          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
-          "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
-
-    state = str(sys.argv[1])
-    if state in states:
+	states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+	state = sys.argv[1]
+	if state in states:
 		trump_and_hillary_tweets_for_state(state, 50)
 	else:
 		print('Error: state is not valid')

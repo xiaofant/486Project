@@ -1,6 +1,5 @@
 import time
 import tweepy
-import MyStreamListener
 # pip install tweepy
 
 
@@ -10,11 +9,9 @@ auth.set_access_token('820682120-tKOcfWOtG1JVwcRPBQNLl1qlrki41D2ZeZ8YElYj',  'F5
 api = tweepy.API(auth)
 
 
-# Return true iff user1 is following user2
+# get following users' id
 def following_users( user ):
 	print 'following_users'
 	following_user_ids = api.friends_ids(user)
-	#relation = api.ShowFriendship(source_screen_name = user1, target_screen_name = user2)
 	return following_user_ids
-	#is_followed_by( user2, user1 )
 

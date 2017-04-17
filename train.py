@@ -4,8 +4,8 @@ import os
 import glob
 import math
 from process_tweets import *
-from friendship import *
 from get_follower_id import *
+from friendship import *
 
 ##########################
 # THIS ASSUMES THAT THE TWEETS HAVE ALREADY BEEN PROCESSED AND
