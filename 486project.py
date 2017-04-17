@@ -10,6 +10,8 @@ if __name__ == '__main__':
     # files = os.listdir(sys.argv[1])
     state = str(sys.argv[1])
 
+    # Only one state listed in command line
+    # Assumes state initials are entered correctly
     if state != 'ALL':
         filename = open("tweets_"+state+".txt",'r')
         users = {}
@@ -80,6 +82,7 @@ if __name__ == '__main__':
 
             correct += compareResults(user_results, state)
 
+        # Compute accuracy
         print 'System predicted ' + str(correct) + '/50 state results correctly'
         accuracy = float(float(correct) / len(states)) * 100
 
