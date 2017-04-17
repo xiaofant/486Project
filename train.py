@@ -7,11 +7,7 @@ from process_tweets import *
 from get_follower_id import *
 from friendship import *
 
-##########################
-# THIS ASSUMES THAT THE TWEETS HAVE ALREADY BEEN PROCESSED AND
-# HAVE BEEN WRITTEN TO A FILE
-##########################
-
+# Get frequencies of unigrams to use for Naive Bayes
 def get_freqs(file, dictionary):
 	for line in file:
 		line = preprocess(line)
@@ -25,6 +21,7 @@ def get_freqs(file, dictionary):
 
 	return dictionary
 
+# Calculate Naive Bayes Probabilities
 def get_probs(liberal, conservative, total_vocab):
 	for word, freq in liberal.iteritems():
 		liberal[word] = float(freq + 1) / float(total_vocab + len(liberal.keys()))
@@ -34,6 +31,7 @@ def get_probs(liberal, conservative, total_vocab):
 
 	return liberal, conservative, total_vocab
 
+# Calculations for the followers metric
 def followingCalculations(username):
 	# Liberal and conservative users on Twitter
 	liberal_users = ['HillaryClinton', 'BarackObama', 'JoeBiden', 'SenSanders', \
@@ -60,6 +58,8 @@ def followingCalculations(username):
 
 	#print 'done getting all followers'
 	# Check if user follows liberal/conservative people
+	# Liberal = positive (+1)
+	# Conservative = negative (-1)
 	for user in liberal_user_id:
 		if user in username_followers:
 			follower_values += 1
@@ -70,6 +70,7 @@ def followingCalculations(username):
 
 	return follower_values
 
+# Calculates Naive Bayes probabilities and combines with hashtag metric
 def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	user_results = {}
 	tweets = []
@@ -78,6 +79,8 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	for line in filename:
 		line = line.split(', ')
 		username = line[0]
+
+		# process tweet
 		tweet = preprocess(line[1].decode('utf-8'))
 		tweet = removeStopwords(tweet)
 
@@ -110,18 +113,13 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 			else:
 				liberal_calc += math.log10(1.00 / float(len(liberal.keys()) + total_vocab))
 
+			# Check if tweet contains liberal or conservative hashtags
 			if word in liberalHashtags:
 				hillaryHashtag = True
 				hillaryHashtagCount += 1
 			if word in conservHashtags:
 				trumpHashtag = True
 				trumpHashtagCount += 1
-
-		
-		#print follwing_calc
-		#print conserv_calc
-		#print liberal_calc
-		#break
 
 		if username not in user_results:
 			user_results[username] = 0
@@ -149,13 +147,14 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 			user_results[username] += 1
 
 
-		# give precedence to naive bayes
+		# Naive Bayes calculations
+		# Give precedence to naive bayes if results contradict hashtag metric
 		if conserv_calc > liberal_calc:
 			user_results[username] -= 1
 			if user_results[username] == 0:
 				user_results[username] = -1
 
-
+		# larger liberal calculation from Naive Bayes
 		else:
 			user_results[username] += 1
 			if user_results[username] == 0:
@@ -166,8 +165,12 @@ def testNaiveBayes(filename, total_vocab, liberal, conservative):
 	#print (user_results)
 	return user_results
 
+# Compare expected and actual results of our model to 2016 election data
 def compareResults(user_results, state):
 
+	# 2016 Election data
+	# Key: State
+	# Values: List[0] = outcome, [1] = republican vote, [2] = democratic vote
 	vote_results = {
 	"AL": ["R", 62.9, 34.6],
 	"AK": ["R", 52.9, 37.7],
@@ -225,8 +228,10 @@ def compareResults(user_results, state):
 	liberal_count = 0
 
 	for user, vote in user_results.items():
+		# If conservative
 		if vote < 0:
 			conservative_count += 1
+		# Liberal
 		elif vote > 0:
 			liberal_count += 1
 
@@ -237,6 +242,8 @@ def compareResults(user_results, state):
 	else:
 		expected = 'D'
 
+	# Print expected and actual results
+	
 	#print "c count: " + str(conservative_count)
 	#rint "l count: " + str(liberal_count)
 	conserv_percent = float(float(conservative_count) / (len(user_results))) * 100
