@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
         for state in states:
 
-            filename = open("tweets_"+state+".txt",'r')
+            filename = open("dataset/tweets_"+state+".txt",'r')
             users = {}
 
             liberal = {}
