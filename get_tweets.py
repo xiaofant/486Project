@@ -119,6 +119,10 @@ if __name__ == '__main__':
           "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
           "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 
-	trump_and_hillary_tweets_for_state( 'HI',  50 )
+    state = str(sys.argv[1])
+    if state in states:
+		trump_and_hillary_tweets_for_state(state, 50)
+	else:
+		print('Error: state is not valid')
 
 
