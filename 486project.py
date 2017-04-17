@@ -13,7 +13,7 @@ if __name__ == '__main__':
     # Only one state listed in command line
     # Assumes state initials are entered correctly
     if state != 'ALL':
-        filename = open("tweets_"+state+".txt",'r')
+        filename = open("dataset/tweets_"+state+".txt",'r')
         users = {}
 
         liberal = {}

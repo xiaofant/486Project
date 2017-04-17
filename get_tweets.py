@@ -95,7 +95,7 @@ def find_tweets_by_state( keyword, state, num, coords, o):
 def trump_and_hillary_tweets_for_state( state = "MI", num_cities = 50 ):
 	coords = find_cities_by_state( state, num_cities )
 
-	o = open( "tweets_" + state + ".txt", "w" )
+	o = open( "dataset/tweets_" + state + ".txt", "w" )
 	# find tweets with specified keywords
 	find_tweets_by_state( "Trump", state, num_cities, coords, o)
 	find_tweets_by_state( "Hillary", state, num_cities, coords, o)
